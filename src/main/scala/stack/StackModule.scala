@@ -20,17 +20,16 @@ class StackModule(val dataWidth: Int, val len: Int) extends Module {
   })
 
   val opcode  = io.in(6, 0)             
-  val data = io.in(31, 7)     
+  val data    = io.in(31, 7)     
   val payload = if (dataWidth > 25) Cat(0.U((dataWidth-25).W), data) else data(dataWidth-1, 0)    
 
   val stack = RegInit(VecInit(Seq.fill(len)(0.U(dataWidth.W))))
   val sp    = RegInit(0.U(log2Ceil(len + 1).W)) 
-
   val underflowReg = RegInit(false.B)
-  val overflowReg = RegInit(false.B)
-  val poppedReg = RegInit(false.B)
-  val peekedReg = RegInit(false.B)
-  val outReg = RegInit(0.U(dataWidth.W))
+  val overflowReg  = RegInit(false.B)
+  val poppedReg    = RegInit(false.B)
+  val peekedReg    = RegInit(false.B)
+  val outReg       = RegInit(0.U(dataWidth.W))
   io.out := outReg
 
   // Default outputs every cycle
@@ -79,10 +78,10 @@ class StackModule(val dataWidth: Int, val len: Int) extends Module {
     }
   }
 
-  io.overflow := overflowReg
+  io.overflow  := overflowReg
   io.underflow := underflowReg
-  io.peeked := peekedReg
-  io.popped := poppedReg
+  io.peeked    := peekedReg
+  io.popped    := poppedReg
 }
 // Your code ends here
 
